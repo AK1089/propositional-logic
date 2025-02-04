@@ -82,7 +82,20 @@ if __name__ == "__main__":
     proof = Proof({p, q, p > (q > false)})
     proof.modus_ponens(p, q > false)
     proof.modus_ponens(q, false)
-    proof.summary()
+    print(proof.summary())
 
     new = use_deduction_theorem(proof, p > (q > false))
-    new.summary()
+    print(new.summary_latex())
+
+    print("\n\n")
+    
+    proof = Proof({false})
+    proof.axiom_1(false, p > false)
+    proof.modus_ponens(false, ~~p)
+    proof.axiom_3(p)
+    proof.modus_ponens(~~p, p)
+    
+    print(proof.summary())
+    
+    new = use_deduction_theorem(proof, false)
+    print(new.summary_latex())

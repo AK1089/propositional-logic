@@ -109,11 +109,24 @@ class Proof:
     # Print a summary of the proof
     def summary(self):
 
+        summary = ""
+        
         # Loop through the lines and applications of the proof and print them out
         for i, (line, application) in enumerate(zip(self.lines, self.applications)):
-            print(f"{i+1:>2}. {application:<12} {str(line):<60}")
+            summary += f"{i+1:>2}. {application:<12} {str(line):<60}\n"
 
         # Print the conclusion
-        print(
-            f"Proved {self.conclude()} from premises {self.premises or '{}'} in {len(self.lines)} lines"
-        )
+        summary +=  f"Proved {self.conclude()} from premises {self.premises or '{}'} in {len(self.lines)} lines"
+        return summary
+    
+    def summary_latex(self):
+        
+        summary = r"\begin{enumerate}" + "\n"
+        # Loop through the lines and applications of the proof and print them out
+        for line, application in zip(self.lines, self.applications):
+            out = str(line).replace("⊥", r"\bot").replace("=>", r"\Ra")
+            out = f"${out}$".replace("$(", "$").replace(")$", "$")
+            summary += f"    \\item {out} \\hfill {application}\n"
+        summary += r"\end{enumerate}"
+        
+        return summary
